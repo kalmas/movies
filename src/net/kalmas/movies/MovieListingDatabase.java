@@ -125,7 +125,6 @@ public class MovieListingDatabase {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			Log.i(TAG, "create");
 			database = db;
 			database.execSQL(FTS_TABLE_CREATE);
 			loadMovieListing();
@@ -135,7 +134,6 @@ public class MovieListingDatabase {
          * Starts a thread to load the database table with movies
          */
         private void loadMovieListing() {
-        	Log.i(TAG, "there");
             new Thread(new Runnable() {
                 public void run() {
                     try {

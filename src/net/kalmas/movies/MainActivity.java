@@ -50,6 +50,7 @@ public class MainActivity extends Activity {
             Intent movieIntent = new Intent(this, MovieActivity.class);
             movieIntent.setData(intent.getData());
             startActivity(movieIntent);
+//        } else {  
         } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             // handles a search query
             String query = intent.getStringExtra(SearchManager.QUERY);

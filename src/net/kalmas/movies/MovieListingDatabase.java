@@ -79,7 +79,7 @@ public class MovieListingDatabase {
      * @return Cursor over all words that match, or null if none found.
      */
 	public Cursor getMovieMatches(String query, String[] columns) {
-		String selection = KEY_TITLE + " MATCH ?";
+		String selection = FTS_VIRTUAL_TABLE + " MATCH ?";
 		String[] selectionArgs = new String[] { query + "*" };
 		
 		return query(selection, selectionArgs, columns);

@@ -77,7 +77,8 @@ public class MovieListingProvider extends ContentProvider {
 		String[] columns = new String[] {
 			BaseColumns._ID,
 			MovieListingDatabase.KEY_TITLE,
-			MovieListingDatabase.KEY_DESCRIPTION
+			MovieListingDatabase.KEY_DESCRIPTION,
+			SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
 		};
 		
 		return movieListing.getMovieMatches(query, columns);

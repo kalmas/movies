@@ -63,9 +63,7 @@ public class MainActivity extends Activity {
      */
     private void showResults(String query) {
 
-        //Cursor cursor = managedQuery(DictionaryProvider.CONTENT_URI, null, null,
-        //                        new String[] {query}, null);
-    	Cursor cursor = managedQuery(MovieListingProvider.CONTENT_URI, 
+    	Cursor cursor = getContentResolver().query(MovieListingProvider.CONTENT_URI, 
     				null, null, new String[] { query }, null);
 
         if (cursor == null) {
@@ -92,7 +90,7 @@ public class MainActivity extends Activity {
 
             // Create a simple cursor adapter for the definitions and apply them to the ListView
             SimpleCursorAdapter words = new SimpleCursorAdapter(this,
-                                          R.layout.result, cursor, from, to);
+                                          R.layout.result, cursor, from, to, 0);
             listView.setAdapter(words);
 
             // Define the on-click listener for the list items

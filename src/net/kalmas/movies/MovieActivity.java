@@ -27,7 +27,7 @@ public class MovieActivity extends Activity {
         }
         
         Uri uri = getIntent().getData();
-        Cursor cursor = managedQuery(uri, null, null, null, null);
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         
 		if(cursor == null) {
 			finish();

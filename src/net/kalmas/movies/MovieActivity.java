@@ -9,9 +9,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -34,8 +36,8 @@ public class MovieActivity extends Activity {
 		} else {
 			cursor.moveToFirst();
 			
-			TextView title = (TextView) findViewById(R.id.title);
-			TextView description = (TextView) findViewById(R.id.description);
+			final TextView title = (TextView) findViewById(R.id.title);
+			final TextView description = (TextView) findViewById(R.id.description);
 			
 			int tIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_TITLE);
 			int dIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_DESCRIPTION);
@@ -44,6 +46,12 @@ public class MovieActivity extends Activity {
 			description.setText(cursor.getString(dIndex));
 		}
 	}
+	
+	 public void addMovie(View view) {
+		 Intent calIntent = new Intent(Intent.ACTION_INSERT);
+		 calIntent.setData(CalendarContract.Events.CONTENT_URI);
+		 startActivity(calIntent);
+	 }
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

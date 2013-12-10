@@ -16,5 +16,7 @@
     </plurals>
     
     <string name="menu_search">Search</string>
+    
+    <string name="add_movie_button">Add This Movie to My Future</string>
 
 </resources>

@@ -25,10 +25,11 @@ public final class R {
         public static final int ic_menu_search=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f0b0004;
+        public static final int action_settings=0x7f0b0005;
+        public static final int add_movie=0x7f0b0004;
         public static final int description=0x7f0b0003;
         public static final int list=0x7f0b0001;
-        public static final int search=0x7f0b0005;
+        public static final int search=0x7f0b0006;
         public static final int text=0x7f0b0000;
         public static final int title=0x7f0b0002;
     }
@@ -51,6 +52,7 @@ public final class R {
     }
     public static final class string {
         public static final int action_settings=0x7f070004;
+        public static final int add_movie_button=0x7f070008;
         public static final int app_name=0x7f070000;
         public static final int menu_search=0x7f070007;
         public static final int no_results=0x7f070005;

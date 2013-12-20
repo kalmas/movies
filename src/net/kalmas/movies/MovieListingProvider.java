@@ -88,7 +88,8 @@ public class MovieListingProvider extends ContentProvider {
 		String rowId = uri.getLastPathSegment();
 		String[] columns = new String[] {
 			MovieListingDatabase.KEY_TITLE,
-			MovieListingDatabase.KEY_DESCRIPTION
+			MovieListingDatabase.KEY_DESCRIPTION,
+			MovieListingDatabase.KEY_RELEASE_DATE
 		};
 		
 		return movieListing.getMovie(rowId, columns);

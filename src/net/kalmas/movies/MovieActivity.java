@@ -38,16 +38,19 @@ public class MovieActivity extends Activity {
 			
 			final TextView title = (TextView) findViewById(R.id.title);
 			final TextView description = (TextView) findViewById(R.id.description);
+			final TextView releaseDate = (TextView) findViewById(R.id.release_date);
 			
 			int tIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_TITLE);
 			int dIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_DESCRIPTION);
+			int rdIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_RELEASE_DATE);
 			
 			title.setText(cursor.getString(tIndex));
 			description.setText(cursor.getString(dIndex));
+			releaseDate.setText(cursor.getString(rdIndex));
 		}
 	}
 	
-	 public void addMovie(View view) {
+	 public void addMovieToFuture(View view) {
 		 Intent calIntent = new Intent(Intent.ACTION_INSERT);
 		 calIntent.setData(CalendarContract.Events.CONTENT_URI);
 		 startActivity(calIntent);

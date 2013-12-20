@@ -23,6 +23,7 @@ public class MovieListingDatabase {
 	
 	public static final String KEY_TITLE = SearchManager.SUGGEST_COLUMN_TEXT_1;
 	public static final String KEY_DESCRIPTION = SearchManager.SUGGEST_COLUMN_TEXT_2;
+	public static final String KEY_RELEASE_DATE = "release_date";
 	
 	
 	private static final String DATABASE_NAME = "movieListing";
@@ -34,7 +35,6 @@ public class MovieListingDatabase {
 
 
 	public MovieListingDatabase(Context context) {
-		Log.i(TAG, "here");
 		movieListingOpenHelper = new MovieListingOpenHelper(context);
 	}
 	
@@ -48,6 +48,7 @@ public class MovieListingDatabase {
         HashMap<String,String> map = new HashMap<String,String>();
         map.put(KEY_TITLE, KEY_TITLE);
         map.put(KEY_DESCRIPTION, KEY_DESCRIPTION);
+        map.put(KEY_RELEASE_DATE, KEY_RELEASE_DATE);
         map.put(BaseColumns._ID, "rowid AS " +
                 BaseColumns._ID);
         map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "rowid AS " +
@@ -116,7 +117,8 @@ public class MovieListingDatabase {
                 "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE +
                 " USING fts3 (" +
                 KEY_TITLE + ", " +
-                KEY_DESCRIPTION + ");";
+                KEY_DESCRIPTION + ", " +
+                KEY_RELEASE_DATE + ");";
 		
 		public MovieListingOpenHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -146,7 +148,7 @@ public class MovieListingDatabase {
         }
         
         private void loadMovies() throws IOException {
-            Log.i(TAG, "Loading words...");
+            Log.i(TAG, "Loading movies into db...");
             final Resources resources = movieListingHelperContext.getResources();
             InputStream inputStream = resources.openRawResource(R.raw.movies);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -155,26 +157,27 @@ public class MovieListingDatabase {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] strings = TextUtils.split(line, "\\|");
-                    if (strings.length < 2) continue;
-                    long id = addMovie(strings[0].trim(), strings[1].trim());
+                    if (strings.length < 3) continue;
+                    long id = addMovie(strings[0].trim(), strings[1].trim(), strings[2].trim());
                     if (id < 0) {
-                        Log.e(TAG, "unable to add word: " + strings[0].trim());
+                        Log.e(TAG, "unable to add movie: " + strings[0].trim());
                     }
                 }
             } finally {
                 reader.close();
             }
-            Log.d(TAG, "DONE loading words.");
+            Log.d(TAG, "DONE loading db.");
         }
         
         /**
          * Add a word to the dictionary.
          * @return rowId or -1 if failed
          */
-        public long addMovie(String title, String description) {
+        public long addMovie(String title, String description, String releaseDate) {
             ContentValues initialValues = new ContentValues();
             initialValues.put(KEY_TITLE, title);
             initialValues.put(KEY_DESCRIPTION, description);
+            initialValues.put(KEY_RELEASE_DATE, releaseDate);
 
             return database.insert(FTS_VIRTUAL_TABLE, null, initialValues);
         }

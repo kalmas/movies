@@ -1,8 +1,12 @@
 package net.kalmas.movies;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.SearchManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +14,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +24,9 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 public class MovieActivity extends Activity {
+	
+	private Date release;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,24 +45,31 @@ public class MovieActivity extends Activity {
 		} else {
 			cursor.moveToFirst();
 			
-			final TextView title = (TextView) findViewById(R.id.title);
-			final TextView description = (TextView) findViewById(R.id.description);
-			final TextView releaseDate = (TextView) findViewById(R.id.release_date);
+			final TextView title_text = (TextView) findViewById(R.id.title);
+			final TextView description_text = (TextView) findViewById(R.id.description);
+			final TextView releaseDate_text = (TextView) findViewById(R.id.release_date);
 			
 			int tIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_TITLE);
 			int dIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_DESCRIPTION);
 			int rdIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_RELEASE_DATE);
 			
-			title.setText(cursor.getString(tIndex));
-			description.setText(cursor.getString(dIndex));
-			releaseDate.setText(cursor.getString(rdIndex));
+			title_text.setText(cursor.getString(tIndex));
+			description_text.setText(cursor.getString(dIndex));
+			
+			SimpleDateFormat format = new SimpleDateFormat("y-M-d");
+			try {
+				release = format.parse(cursor.getString(rdIndex));
+				releaseDate_text.setText(release.toString());
+			} catch(Exception e) {
+				Log.e("MovieActivity", e.getMessage());
+			}
 		}
 	}
 	
-	 public void addMovieToFuture(View view) {
-		 Intent calIntent = new Intent(Intent.ACTION_INSERT);
-		 calIntent.setData(CalendarContract.Events.CONTENT_URI);
-		 startActivity(calIntent);
+	 public void addToMyMovies(View view) {
+		 ContentValues movie = new ContentValues();
+         movie.put(MyMoviesDatabase.KEY_MOVIE_LISTING_ID, 123);
+		 getContentResolver().insert(MyMoviesProvider.INSERT_URI, movie);
 	 }
 	
     @Override

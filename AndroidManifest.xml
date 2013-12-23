@@ -35,6 +35,10 @@
         
 		<provider android:name="net.kalmas.movies.MovieListingProvider"
                   android:authorities="net.kalmas.movies.MovieListingProvider" />
+		
+		<provider android:name="net.kalmas.movies.MyMoviesProvider"
+		    	  android:exported="false"
+                  android:authorities="net.kalmas.movies.MyMoviesProvider" />
         
         <meta-data android:name="android.app.default_searchable"
                    android:value="net.kalmas.movies.MainActivity" />

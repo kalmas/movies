@@ -33,7 +33,7 @@
         <activity android:name="net.kalmas.movies.MovieActivity"  />
 
         
-		<provider android:name="net.kalmas.movies.MovieListingProvider"
+		<provider android:name="net.kalmas.movies.provider.MovieListingContentProvider"
                   android:authorities="net.kalmas.movies.MovieListingProvider" />
 		
 		<provider android:name="net.kalmas.movies.MyMoviesProvider"

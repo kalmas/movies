@@ -1,5 +1,6 @@
 package net.kalmas.movies;
 
+import net.kalmas.movies.provider.MovieListingContentProvider;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -63,7 +64,7 @@ public class MainActivity extends Activity {
      */
     private void showResults(String query) {
 
-    	Cursor cursor = getContentResolver().query(MovieListingProvider.CONTENT_URI, 
+    	Cursor cursor = getContentResolver().query(MovieListingContentProvider.CONTENT_URI, 
     				null, null, new String[] { query }, null);
 
         if (cursor == null) {
@@ -100,7 +101,7 @@ public class MainActivity extends Activity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // Build the Intent used to open WordActivity with a specific word Uri
                     Intent wordIntent = new Intent(getApplicationContext(), MovieActivity.class);
-                    Uri data = Uri.withAppendedPath(MovieListingProvider.CONTENT_URI,
+                    Uri data = Uri.withAppendedPath(MovieListingContentProvider.CONTENT_URI,
                                                     String.valueOf(id));
                     wordIntent.setData(data);
                     startActivity(wordIntent);

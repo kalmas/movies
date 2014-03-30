@@ -26,7 +26,7 @@ public class MovieListingDatabase {
 	public static final String KEY_RELEASE_DATE = "release_date";
 	
 	
-	private static final String DATABASE_NAME = "movieListing";
+	private static final String DATABASE_NAME = "movieListing.db";
 	private static final int DATABASE_VERSION = 1;
 	private static final String FTS_VIRTUAL_TABLE = "FTSmovieListing";
 	

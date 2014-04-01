@@ -11,9 +11,9 @@ public final class R {
 		public static final int flip = 0x7f040000;
 	}
 	public static final class color {
-		public static final int blue = 0x7f070002;
-		public static final int medium_gray = 0x7f070001;
-		public static final int white = 0x7f070000;
+		public static final int blue = 0x7f060002;
+		public static final int medium_gray = 0x7f060001;
+		public static final int white = 0x7f060000;
 	}
 	public static final class drawable {
 		public static final int ic_menu_preferences = 0x7f020001;
@@ -21,19 +21,19 @@ public final class R {
 		public static final int pine_grosbeak = 0x7f020004;
 	}
 	public static final class id {
-		public static final int menu_animation = 0x7f0d0008;
-		public static final int menu_bluetooth = 0x7f0d0007;
-		public static final int menu_lifecycle = 0x7f0d0006;
+		public static final int menu_animation = 0x7f0c0008;
+		public static final int menu_bluetooth = 0x7f0c0007;
+		public static final int menu_lifecycle = 0x7f0c0006;
 	}
 	public static final class menu {
-		public static final int finch_option_menu = 0x7f0c0000;
+		public static final int finch_option_menu = 0x7f0b0000;
 	}
 	public static final class string {
-		public static final int animation_example = 0x7f080005;
-		public static final int app_name = 0x7f080000;
-		public static final int bluetooth_tools = 0x7f080004;
-		public static final int connect = 0x7f080001;
-		public static final int discoverable = 0x7f080002;
-		public static final int lifecycle_explorer = 0x7f080003;
+		public static final int animation_example = 0x7f070005;
+		public static final int app_name = 0x7f070000;
+		public static final int bluetooth_tools = 0x7f070004;
+		public static final int connect = 0x7f070001;
+		public static final int discoverable = 0x7f070002;
+		public static final int lifecycle_explorer = 0x7f070003;
 	}
 }

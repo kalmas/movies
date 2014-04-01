@@ -49,16 +49,16 @@ public class MovieActivity extends Activity {
 			final TextView description_text = (TextView) findViewById(R.id.description);
 			final TextView releaseDate_text = (TextView) findViewById(R.id.release_date);
 			
-			int tIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_TITLE);
-			int dIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_DESCRIPTION);
-			int rdIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_RELEASE_DATE);
+//			int tIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_TITLE);
+//			int dIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_DESCRIPTION);
+//			int rdIndex = cursor.getColumnIndexOrThrow(MovieListingDatabase.KEY_RELEASE_DATE);
 			
-			title_text.setText(cursor.getString(tIndex));
-			description_text.setText(cursor.getString(dIndex));
+			title_text.setText("Title");
+			description_text.setText("Description");
 			
 			SimpleDateFormat format = new SimpleDateFormat("y-M-d");
 			try {
-				release = format.parse(cursor.getString(rdIndex));
+				release = format.parse("Release Date");
 				releaseDate_text.setText(release.toString());
 			} catch(Exception e) {
 				Log.e("MovieActivity", e.getMessage());
@@ -66,11 +66,11 @@ public class MovieActivity extends Activity {
 		}
 	}
 	
-	 public void addToMyMovies(View view) {
-		 ContentValues movie = new ContentValues();
-         movie.put(MyMoviesDatabase.KEY_MOVIE_LISTING_ID, 123);
-		 getContentResolver().insert(MyMoviesProvider.INSERT_URI, movie);
-	 }
+//	 public void addToMyMovies(View view) {
+//		 ContentValues movie = new ContentValues();
+//         movie.put(MyMoviesDatabase.KEY_MOVIE_LISTING_ID, 123);
+//		 getContentResolver().insert(MyMoviesProvider.INSERT_URI, movie);
+//	 }
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

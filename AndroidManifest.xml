@@ -3,6 +3,8 @@
     package="net.kalmas.movies"
     android:versionCode="1"
     android:versionName="1.0" >
+    
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-sdk android:minSdkVersion="14"
         android:targetSdkVersion="19" />
@@ -34,11 +36,11 @@
 
         
 		<provider android:name="net.kalmas.movies.provider.MovieListingContentProvider"
-                  android:authorities="net.kalmas.movies.MovieListingProvider" />
+                  android:authorities="net.kalmas.movies.provider.MovieListingContentProvider" />
 		
-		<provider android:name="net.kalmas.movies.MyMoviesProvider"
+<!-- 		<provider android:name="net.kalmas.movies.MyMoviesProvider"
 		    	  android:exported="false"
-                  android:authorities="net.kalmas.movies.MyMoviesProvider" />
+                  android:authorities="net.kalmas.movies.MyMoviesProvider" /> -->
         
         <meta-data android:name="android.app.default_searchable"
                    android:value="net.kalmas.movies.MainActivity" />

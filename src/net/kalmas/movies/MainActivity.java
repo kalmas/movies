@@ -78,10 +78,10 @@ public class MainActivity extends Activity {
             textView.setText(countString);
 
             // Specify the columns we want to display in the result
-            String[] from = new String[] { 
-            	MovieListingDatabase.KEY_TITLE,
-                MovieListingDatabase.KEY_DESCRIPTION 
-            };
+//            String[] from = new String[] { 
+//            	MovieListingDatabase.KEY_TITLE,
+//                MovieListingDatabase.KEY_DESCRIPTION 
+//            };
 
             // Specify the corresponding layout elements where we want the columns to go
             int[] to = new int[] { 
@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
 
             // Create a simple cursor adapter for the definitions and apply them to the ListView
             SimpleCursorAdapter words = new SimpleCursorAdapter(this,
-                                          R.layout.result, cursor, from, to, 0);
+                                          R.layout.result, cursor, null, to, 0);
             listView.setAdapter(words);
 
             // Define the on-click listener for the list items

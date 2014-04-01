@@ -5,11 +5,7 @@ import java.io.File;
 import com.finchframework.finch.rest.FileHandlerFactory;
 import com.finchframework.finch.rest.RESTfulContentProvider;
 import com.finchframework.finch.rest.ResponseHandler;
-import com.oreilly.demo.android.pa.finchvideo.provider.FinchVideoContentProvider.DatabaseHelper;
-//import com.oreilly.demo.android.pa.finchvideo.provider.FinchVideo;
-//import com.oreilly.demo.android.pa.finchvideo.provider.FinchVideoContentProvider.DatabaseHelper;
 
-import net.kalmas.movies.MovieListingDatabase;
 import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -20,10 +16,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 public class MovieListingContentProvider extends RESTfulContentProvider {
+	/*
+	 * DB Constants 
+	 */
 	private static final String DATABASE_NAME = "movie.db";
-	private static final int DATABASE_VERSION = 0;
+	private static final int DATABASE_VERSION = 1;
 	
 	public static final String TABLE_SUGGESTION_NAME = "movieSuggestion";
 	public static final String KEY_SUGGESTION_QUERY = "query";
@@ -32,12 +32,16 @@ public class MovieListingContentProvider extends RESTfulContentProvider {
 	public static final String KEY_SUGGESTION_TITLE = "title";
 	public static final String KEY_SUGGESTION_MOVIE_ID = "movie_id";
 	
+	/*
+	 * Web Service Constants
+	 */
 	private static final String MOVIE_FILE_CACHE = "movie_file_cache";
+	private static final String WEB_URI = "http://kalmas.net/movies/complete?q=";
 	
 	
 	
 	// old consts
-	public static String AUTHORITY = "net.kalmas.movies.MovieListingProvider";
+	public static String AUTHORITY = "net.kalmas.movies.provider.MovieListingContentProvider";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/movie_listing");
 	
 	public static final String TITLE_MIME_TYPE = 
@@ -45,7 +49,7 @@ public class MovieListingContentProvider extends RESTfulContentProvider {
 	public static final String DESCRIPTION_MIME_TYPE = 
 			ContentResolver.CURSOR_DIR_BASE_TYPE + "/net.kalmas.movies";
 	
-	private MovieListingDatabase movieListing;
+//	private MovieListingDatabase movieListing;
 
 	private static final int SEARCH_MOVIES = 0;
 	private static final int GET_MOVIE = 1;
@@ -88,7 +92,7 @@ public class MovieListingContentProvider extends RESTfulContentProvider {
                             " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                             KEY_SUGGESTION_QUERY + " TEXT, " +
                             KEY_SUGGESTION_TITLE + " TEXT, " +
-                            KEY_SUGGESTION_MOVIE_ID + " INTEGER, " +
+                            KEY_SUGGESTION_MOVIE_ID + " INTEGER" +
                             ");";
             sqLiteDatabase.execSQL(createSuggestionTable);
         }
@@ -122,41 +126,41 @@ public class MovieListingContentProvider extends RESTfulContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 						String[] selectionArgs, String sortOrder) {
+		Cursor queryCursor;
+		
 		switch(sURIMatcher.match(uri)) {
 			case SEARCH_SUGGEST:
 			case SEARCH_MOVIES:
-				if(selectionArgs == null) {
-					throw new IllegalArgumentException("selectionArgs must be provided for the Uri: " + uri);
-				}
-				return getSuggestions(selectionArgs[0]);
+                String queryText = selectionArgs[0];
+                
+                if (queryText == null) {
+                    return null;
+                }
+                
+                String select = KEY_SUGGESTION_QUERY + " = '" +  queryText + "'";
+                queryCursor = mDb.query(TABLE_SUGGESTION_NAME, 
+                				null,
+                                select,
+                                null,
+                                null,
+                                null, 
+                                null);
+				
+                // make the cursor observe the requested query
+                queryCursor.setNotificationUri(getContext().getContentResolver(), uri);
+                
+                if (!"".equals(queryText)) {
+                    asyncQueryRequest(queryText, WEB_URI + encode(queryText));
+                }
+                break;
 			case GET_MOVIE:
-				return getMovie(uri);
+				// return getMovie(uri);
+				return null;
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);		
 		}
-	}
-	
-	private Cursor getSuggestions(String query) {
-		query = query.toLowerCase();
-		String[] columns = new String[] {
-			BaseColumns._ID,
-			MovieListingDatabase.KEY_TITLE,
-			MovieListingDatabase.KEY_DESCRIPTION,
-			SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
-		};
 		
-		return movieListing.getMovieMatches(query, columns);
-	}
-	
-	private Cursor getMovie(Uri uri){
-		String rowId = uri.getLastPathSegment();
-		String[] columns = new String[] {
-			MovieListingDatabase.KEY_TITLE,
-			MovieListingDatabase.KEY_DESCRIPTION,
-			MovieListingDatabase.KEY_RELEASE_DATE
-		};
-		
-		return movieListing.getMovie(rowId, columns);
+		return queryCursor;
 	}
 
 	@Override
@@ -172,6 +176,17 @@ public class MovieListingContentProvider extends RESTfulContentProvider {
                 throw new IllegalArgumentException("Unknown URL " + uri);
 		}
 	}
+	
+    /**
+     * Provides a handler that can parse YouTube gData RSS content.
+     *
+     * @param requestTag unique tag identifying this request.
+     * @return a MovieSourceHandler object.
+     */
+    @Override
+    protected ResponseHandler newResponseHandler(String requestTag) {
+        return new MovieSourceHandler(this, requestTag);
+    }
 	
 	@Override
 	public int delete(Uri arg0, String arg1, String[] arg2) {
@@ -190,14 +205,8 @@ public class MovieListingContentProvider extends RESTfulContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues cv, SQLiteDatabase db) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	protected ResponseHandler newResponseHandler(String requestTag) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
